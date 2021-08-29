@@ -86,7 +86,7 @@ def render_maze(grid: np.ndarray, maps: List[str] = None) -> str:
 
 def find_agent(grid: np.ndarray) -> Tuple[int, int]:
     """Return x, y location of the agent. If not exist, return None, None."""
-    y, x = np.where((grid > 1) & (grid < 6))
+    y, x = np.where((grid > 1) & (grid < 6)) 
     if len(x) > 0 and len(y) > 0:
         return x[0], y[0]
     else:
