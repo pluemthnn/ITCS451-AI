@@ -5,7 +5,7 @@ from hw1.pathfinding import MazeState, TreeNode
 from hw1.pqueue import SimplePriorityQueue
 
  
-maze1 = gen_maze(6, add_mud=True) #normal -> 10
+maze1 = gen_maze(10, add_mud=True)
 state1 = MazeState(maze1)
 print(render_maze(maze1))
 

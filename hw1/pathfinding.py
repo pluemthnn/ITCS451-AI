@@ -111,30 +111,37 @@ class MazeState:
         if (agent_pos != 2 and action == "up"):  # If agent face up -> check wall, mud
             print("in up")
             next_pos = state.grid[x-1, y]
-            cost = 1
+            cost += 1
 
         elif (agent_pos != 3 and action == "right"):  # If agent face right -> check wall, mud
             print("in right")
             next_pos = state.grid[x, y+1]
-            cost = 1
+            cost += 1
             
         elif (agent_pos != 4 and action == "down"):  # If agent face down -> check wall, mud
             print("in down")
             next_pos = state.grid[x+1, y]
-            cost = 1
+            cost += 1
     
         elif (agent_pos != 5 and action == "left"):  # If agent face left -> check wall, mud
             print("in left")
             next_pos = state.grid[x, y-1]
-            cost = 1
+            cost += 1
 
+        elif (action == "move"):
+            cost += 1
+            if(agent_pos == 2): next_pos = state.grid[x-1, y]
+            elif(agent_pos == 3): next_pos = state.grid[x, y+1]
+            elif(agent_pos == 4): next_pos = state.grid[x+1, y]
+            elif(agent_pos == 5): next_pos = state.grid[x, y-1]
+
+            if (next_pos == 7): 
+                print("found mud")
+                cost += 1
 
         if (next_pos == 1):
             print("not passable") 
             cost = float('inf')
-        elif (next_pos == 7): 
-            print("found mud")
-            cost += 1
 
         return cost
 
@@ -152,12 +159,14 @@ class MazeState:
     @classmethod
     def heuristic(cls, state: MazeState) -> float:
         """Return a heuristic value for the state.
-
         Note
         ---------------
         You may come up with your own heuristic function.
         """
-        return 0
+        y, x = find_agent(state.grid)  # transform agent position to [x, y]
+        i, j = state.grid.shape  # get grid shape
+        heu = abs(x-(i-2)) + abs(y-(j-2))
+        return heu
 # %%
 
 
