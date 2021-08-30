@@ -28,7 +28,7 @@ class MazeState:
     # TODO 2 Create a list of all possible actions.
     # Please replace it with your own actions
     # Note that an agent can only rotate and move forward.
-    actions: Tuple[str] = ('up', 'down', 'left', 'right', 'move')
+    actions: Tuple[str] = ('right', 'move', 'down', 'left', 'up' )
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, MazeState):
@@ -109,22 +109,18 @@ class MazeState:
 
         
         if (agent_pos != 2 and action == "up"):  # If agent face up -> check wall, mud
-            print("in up")
             next_pos = state.grid[x-1, y]
             cost += 1
 
         elif (agent_pos != 3 and action == "right"):  # If agent face right -> check wall, mud
-            print("in right")
             next_pos = state.grid[x, y+1]
             cost += 1
             
         elif (agent_pos != 4 and action == "down"):  # If agent face down -> check wall, mud
-            print("in down")
             next_pos = state.grid[x+1, y]
             cost += 1
     
         elif (agent_pos != 5 and action == "left"):  # If agent face left -> check wall, mud
-            print("in left")
             next_pos = state.grid[x, y-1]
             cost += 1
 
@@ -136,11 +132,9 @@ class MazeState:
             elif(agent_pos == 5): next_pos = state.grid[x, y-1]
 
             if (next_pos == 7): 
-                print("found mud")
                 cost += 1
 
         if (next_pos == 1):
-            print("not passable") 
             cost = float('inf')
 
         return cost
@@ -151,7 +145,6 @@ class MazeState:
         """Return True if `state` is the goal."""
         i, j = state.grid.shape  # check grid shape
         if(state.grid[i-2, j-2] < 6 and state.grid[i-2, j-2] > 1):  # check if goal position have agent
-            print("Yeahhhhhhh")
             return True
         return False
 
