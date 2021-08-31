@@ -1,11 +1,11 @@
 """This module contains classes and function to solve a pathfinding problem.
 
 Author:
-    -
-    -
+    - THANAWAN LHIMPATHANAWAT
+    - THANWARAT WONGTHONGTHAM
 Student ID:
-    -
-    -
+    - 6288027
+    - 6288145
 """
 
 # %%
@@ -28,7 +28,7 @@ class MazeState:
     # TODO 2 Create a list of all possible actions.
     # Please replace it with your own actions
     # Note that an agent can only rotate and move forward.
-    actions: Tuple[str] = ('right', 'move', 'down', 'left', 'up' )
+    actions: Tuple[str] = ('right', 'down', 'left', 'up', 'move' )
 
     def __eq__(self, o: object) -> bool:
         if isinstance(o, MazeState):
