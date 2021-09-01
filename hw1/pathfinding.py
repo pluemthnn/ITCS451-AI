@@ -91,7 +91,7 @@ class MazeState:
 
     # TODO 4: Create a cost function
     @classmethod
-    def cost(cls, state: MazeState, action: str) -> float: # ERROR WTF
+    def cost(cls, state: MazeState, action: str) -> float:
         """Return the cost of `action` for a given `state`.
 
         If the action is not possible, the cost should be infinite.
