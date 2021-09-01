@@ -33,21 +33,16 @@ For each step, the agent can change its facing direction or move forward (no act
 Checkpoint 1
 Implement TODO 1 to 6
 
-Criteria (4 points)
+  1. 1pt: Your code run (checkpoint1.py) without any error.
+  2. 0.5pt: For each correct implementation of the TODO 1 to 6
 
-1pt: Your code run (checkpoint1.py) without any error.
-0.5pt: For each correct implementation of the TODO 1 to 6
 Checkpoint 2
 Implement TODO 7 to 9
 
-Criteria (6 points)
-
-1pt: Your code run (checkpoint2.py) without any error.
-0.5pt: TODO 7
-0.5pt: TODO 8
-1pt: TODO 9, termination condition is correct
-1pt: TODO 9, new nodes are created correctly
-1pt: TODO 9, nodes are correctly pushed into the queue (open-set)
-1pt: TODO 9, a correct plan and a correct cost is returned
-
- 
+  1. 1pt: Your code run (checkpoint2.py) without any error.
+  2. 0.5pt: TODO 7
+  3. 0.5pt: TODO 8
+  4. 1pt: TODO 9, termination condition is correct
+  5. 1pt: TODO 9, new nodes are created correctly
+  6. 1pt: TODO 9, nodes are correctly pushed into the queue (open-set)
+  7. 1pt: TODO 9, a correct plan and a correct cost is returned
