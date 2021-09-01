@@ -30,13 +30,13 @@ In this example, the agent ('>') is at the top-left corner and facing east. You 
     -  7: '~', mud (passable, but cost more)
 For each step, the agent can change its facing direction or move forward (no action is not an option here). The agent has to pay for each action. You can design the cost of the actions. Whenever the agent gets into the mud, it must pay an additional cost and the mud will disappear.
 
-Checkpoint 1
+Checkpoint 1 [x]
 Implement TODO 1 to 6
 
   1. 1pt: Your code run (checkpoint1.py) without any error.
   2. 0.5pt: For each correct implementation of the TODO 1 to 6
 
-Checkpoint 2
+Checkpoint 2 [ ]tbc.
 Implement TODO 7 to 9
 
   1. 1pt: Your code run (checkpoint2.py) without any error.
