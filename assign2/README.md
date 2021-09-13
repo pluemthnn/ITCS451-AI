@@ -27,3 +27,7 @@ Criteria
   4. You implement "Max" correctly
   5. Your implement alpha-beta pruning correctly
  
+/w Wonderful Teammate 🍌
+@gdoyssaga 
+@bellsathita 
+@Lt-taa 
