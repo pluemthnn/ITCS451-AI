@@ -10,8 +10,8 @@ from hw2 import tictactoe as TTT
 # botX = TTT.StupidBot(TTT.Player.X)
 botX = TTT.MinimaxBot(TTT.Player.X)
 # botX = TTT.HumanPlayer(TTT.Player.X)
-# botO = TTT.StupidBot(TTT.Player.O)
-botO = TTT.MinimaxBot(TTT.Player.O)
+botO = TTT.StupidBot(TTT.Player.O)
+# botO = TTT.MinimaxBot(TTT.Player.O)
 # botO = TTT.HumanPlayer(TTT.Player.O)
 
 
