@@ -47,4 +47,4 @@ Implement TODO 7 to 9
   6. 1pt: TODO 9, nodes are correctly pushed into the queue (open-set)
   7. 1pt: TODO 9, a correct plan and a correct cost is returned
 
-*Special Thanks to* @Lt-taa *for the report hard-working*✨
+*Special Thanks to* @Lt-taa *for the hard-working*✨
