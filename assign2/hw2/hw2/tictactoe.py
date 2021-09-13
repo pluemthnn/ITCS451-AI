@@ -284,7 +284,7 @@ class HumanPlayer(StupidBot):
 
 class MinimaxBot(StupidBot):
 
-    count = 0
+    count = 0 # count node
 
     def __init__(self, player: Player) -> None:
         super().__init__(player)
@@ -340,7 +340,7 @@ class MinimaxBot(StupidBot):
 
 class AlphaBetaBot(StupidBot):
 
-    count = 0
+    count = 0 # count node
 
     def __init__(self, player: Player) -> None:
         super().__init__(player)
@@ -380,10 +380,10 @@ class AlphaBetaBot(StupidBot):
                 tic_state = TicTacToeState.transition(state, i)
                 score = AlphaBetaBot.AlphaBeta(tic_state, alpha, beta, False, player)
 
-                if (score > best_score):
+                if (score > best_score): # update base score
                     best_score = score
-                if (best_score >= beta):
-                    return best_score
+                if (best_score >= beta): # pruning
+                    return best_score 
                 alpha = max(alpha, best_score)
             return best_score
         else:
@@ -393,9 +393,9 @@ class AlphaBetaBot(StupidBot):
                 tic_state = TicTacToeState.transition(state, i)
                 score = AlphaBetaBot.AlphaBeta(tic_state, alpha, beta, True, player)
 
-                if (score < best_score):
+                if (score < best_score): # update base score
                     best_score = score
-                if (best_score <= alpha):
-                    return best_score
+                if (best_score <= alpha): # pruning
+                    return best_score 
                 beta = min(beta, best_score)
             return best_score
