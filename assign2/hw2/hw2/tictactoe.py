@@ -1,10 +1,10 @@
 """This module contains classes and functions for Tic-Tac-Toe.
 
 Members:
-1. Name:  ID:
-2. Name:  ID:
-3. Name:  ID:
-4. Name: nongpluemnaruk  ID: 
+1. Name: Sathita In. ID: 6288014
+2. Name: Thanawan Lh. ID: 6288027
+3. Name: Thanapron Kh. ID: 6288083
+4. Name: Thanwarat Wo.  ID: 6288145
 
 """
 from __future__ import annotations
@@ -43,18 +43,18 @@ class TicTacToeState:
 
     def find_pos(pos) -> Tuple[int, int]:
         ''' Return x, y position that match input value '''
-        x = None
-        y = None
+        x, y  = None, None
+
         pos_board = np.array([
             [0, 1, 2],
             [3, 4, 5],
             [6, 7, 8]
         ])
+
         for i in range(len(pos_board)):
             for j in range(len(pos_board[i])):
                 if pos_board[i][j] == pos:
-                    x = i
-                    y = j
+                    x, y = i, j
                     return x, y
             # end loop
         # end loop
@@ -101,7 +101,10 @@ class TicTacToeState:
 
     def bot_util(state: TicTacToeState, player: Player) -> Union[int, None]:
         """ check if any player win or tie and
-            return a player's score by calculation ... ( 1 -> X, 2 -> O, 3 -> Tie) or None """
+            return a player's score by calculation ... 
+            
+            status * (valid_actions + 1)
+            """
 
         pattern = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
                    [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]]  # All possibility that player can win
@@ -118,34 +121,33 @@ class TicTacToeState:
             x, y = TicTacToeState.find_pos(pattern[i][0])
 
             for j in range(len(pattern[i])):
-                # isAgent collect value inside board of that position
                 x, y = TicTacToeState.find_pos(pattern[i][j])
-                isAgent.append(state.board[x][y])
+                isAgent.append(state.board[x][y]) # collect player.value inside board of that position
             # end loop
 
             Check = isAgent[0] + isAgent[1] + isAgent[2]
-            if ((isAgent[0] == isAgent[1] == isAgent[2]) and (Check == 3 or Check == 6)):
-                # if all value in isAgent is equal and check if [1,1,1] [2,2,2]
-                # print(f"Agent : {isAgent} player : {player.value}")
+            if ((isAgent[0] == isAgent[1] == isAgent[2]) and (Check == 3 or Check == 6)):# if any player wins
                 if isAgent[0] == player.value:
                     status = 1
                 else:
                     status = -1
                 return status*valid_actions
+            # end condition
             isAgent.clear()
         # end loop
 
         # check is tie
         for i in range(len(state.board)):
             for j in range(len(state.board[i])):
-                # Count of all board is full with X or O
-                if state.board[i][j] == 1 or state.board[i][j] == 2:
+                if state.board[i][j] == 1 or state.board[i][j] == 2: # Count box that contain X or O
                     Is_full += 1
+            # end loop
+        # end loop
 
         if(Is_full == 9):
             status = 0
             return status*valid_actions
-
+        # end condition
         return None
 
     # TODO 2: Create actions function
@@ -232,15 +234,10 @@ class TicTacToeState:
 
         The `player` can be different than the `state`.`curPlayer`.
         """
-
-        # Normal
         is_terminal = TicTacToeState.isGoal(state)
         if player.value == is_terminal:
             return 1.0
         return 0.0
-
-        # For AI
-        # return TicTacToeState.bot_util(state, player)
 
     def __repr__(self) -> str:
         a = [[symbol_map[c] for c in row] for row in self.board]
@@ -297,67 +294,47 @@ class MinimaxBot(StupidBot):
         """Return an action to play or None to skip."""
         player = state.curPlayer
         valid_actions = TicTacToeState.actions(state)
-        if len(valid_actions) == 10:
-            return valid_actions[np.random.randint(0, len(valid_actions))]
-        else:
-            best_score = -(math.inf)
-            best_move = 0
 
-            for i in valid_actions:
-                x, y = TicTacToeState.find_pos(i)
-                if state.board[x][y] == 0:
-                    tic_state = TicTacToeState.transition(state, i)
-                    score = MinimaxBot.minimax(tic_state, False, player)
-                    state.board[x][y] == 0
-                    if (score > best_score):
-                        best_score = score
-                        best_move = i
-                print(f"Minima {MinimaxBot.count}")
-            MinimaxBot.count = 0
-            return best_move
+        best_score = -(math.inf)
+        best_move = 0
+
+        for i in valid_actions:
+            tic_state = TicTacToeState.transition(state, i)
+            score = MinimaxBot.minimax(tic_state, False, player)
+
+            if (score > best_score):
+                best_score = score
+                best_move = i
+            # print(MinimaxBot.count)
+        MinimaxBot.count = 0
+        return best_move
 
     def minimax(state: TicTacToeState, isMaximizing, player: Player):
         valid_actions = TicTacToeState.actions(state)
-        # print(f"Is Go--{TicTacToeState.isGoal(state)} {valid_actions}")
-        if TicTacToeState.isGoal(state) == 1:
-            score = TicTacToeState.bot_util(state, player)  # TODO Important !
-            # print(f"in 1 score {score}")
-            MinimaxBot.count += 1
-            return score
-        elif TicTacToeState.isGoal(state) == 2:
-            score = TicTacToeState.bot_util(state, player)  # TODO Important !
-            # print(f"in -1 score {score}")
-            MinimaxBot.count += 1
-            return score
-        elif TicTacToeState.isGoal(state) == 3:
-            score = TicTacToeState.bot_util(state, player)  # TODO Important !
-            # print(f"in tie score {score}")
+
+        # base case
+        if TicTacToeState.isGoal(state) == 1 or TicTacToeState.isGoal(state) == 2 or TicTacToeState.isGoal(state) == 3:
+            score = TicTacToeState.bot_util(state, player)  # calculate score
             MinimaxBot.count += 1
             return score
 
         if (isMaximizing):
             best_score = -(math.inf)
             for i in valid_actions:
-                x, y = TicTacToeState.find_pos(i)
-                if state.board[x][y] == 0:
-                    tic_state = TicTacToeState.transition(state, i)
-                    # print(f" try {i} at {x}{y} isMaximizing {isMaximizing}")
-                    score = MinimaxBot.minimax(tic_state, False, player)
-                    state.board[x][y] == 0
-                    if (score > best_score):
-                        best_score = score
+                tic_state = TicTacToeState.transition(state, i)
+                score = MinimaxBot.minimax(tic_state, False, player)
+
+                if (score > best_score):
+                    best_score = score
             return best_score
         else:
             best_score = math.inf
             for i in valid_actions:
-                x, y = TicTacToeState.find_pos(i)
-                if state.board[x][y] == 0:
-                    tic_state = TicTacToeState.transition(state, i)
-                    # print(f" try {i} at {x}{y} isMaximizing {isMaximizing}")
-                    score = MinimaxBot.minimax(tic_state, True, player)
-                    state.board[x][y] == 0
-                    if (score < best_score):
-                        best_score = score
+                tic_state = TicTacToeState.transition(state, i)
+                score = MinimaxBot.minimax(tic_state, True, player)
+                
+                if (score < best_score):
+                    best_score = score
             return best_score
 
 
@@ -373,74 +350,52 @@ class AlphaBetaBot(StupidBot):
         """Return an action to play or None to skip."""
         player = state.curPlayer
         valid_actions = TicTacToeState.actions(state)
-        if len(valid_actions) == 10:
-            return valid_actions[np.random.randint(0, len(valid_actions))]
-        else:
-            best_score = -(math.inf)
-            best_move = 0
+       
+        best_score = -(math.inf)
+        best_move = 0
 
-            for i in valid_actions:
-                x, y = TicTacToeState.find_pos(i)
-                if state.board[x][y] == 0:
-                    tic_state = TicTacToeState.transition(state, i)
-                    score = AlphaBetaBot.AlphaBeta(
-                        tic_state, -(math.inf), math.inf, False, player)
-                    state.board[x][y] == 0
-                    if (score > best_score):
-                        best_score = score
-                        best_move = i
-                print(f"Apl {AlphaBetaBot.count}")
-            AlphaBetaBot.count = 0
-            return best_move
+        for i in valid_actions:
+            tic_state = TicTacToeState.transition(state, i)
+            score = AlphaBetaBot.AlphaBeta(tic_state, -(math.inf), math.inf, False, player)
+
+            if (score > best_score):
+                best_score = score
+                best_move = i
+            # print(AlphaBetaBot.count)
+        AlphaBetaBot.count = 0
+        return best_move
 
     def AlphaBeta(state: TicTacToeState, alpha, beta, isMaximizing, player: Player):
         valid_actions = TicTacToeState.actions(state)
-        # print(f"Is Go--{TicTacToeState.isGoal(state)} {valid_actions}")
-        if TicTacToeState.isGoal(state) == 1:
-            score = TicTacToeState.bot_util(state, player)  # TODO Important !
+       
+        if TicTacToeState.isGoal(state) == 1 or TicTacToeState.isGoal(state) == 2 or TicTacToeState.isGoal(state) == 3: # base case
+            score = TicTacToeState.bot_util(state, player)  # claculate score
             AlphaBetaBot.count += 1
-            # print(f"in 1 score {score}")
-            return score
-        elif TicTacToeState.isGoal(state) == 2:
-            score = TicTacToeState.bot_util(state, player)  # TODO Important !
-            AlphaBetaBot.count += 1
-            # print(f"in -1 score {score}")
-            return score
-        elif TicTacToeState.isGoal(state) == 3:
-            score = TicTacToeState.bot_util(state, player)  # TODO Important !
-            AlphaBetaBot.count += 1
-            # print(f"in tie score {score}")
             return score
 
         if (isMaximizing):
             best_score = -(math.inf)
             for i in valid_actions:
-                x, y = TicTacToeState.find_pos(i)
-                if state.board[x][y] == 0:
-                    tic_state = TicTacToeState.transition(state, i)
-                    # print(f" try {i} at {x}{y} isMaximizing {isMaximizing}")
-                    score = AlphaBetaBot.AlphaBeta(
-                        tic_state, alpha, beta, False, player)
-                    state.board[x][y] == 0
-                    if (score > best_score):
-                        best_score = score
-                    if (best_score >= beta):
-                        return best_score
-                    alpha = max(alpha, best_score)
+
+                tic_state = TicTacToeState.transition(state, i)
+                score = AlphaBetaBot.AlphaBeta(tic_state, alpha, beta, False, player)
+
+                if (score > best_score):
+                    best_score = score
+                if (best_score >= beta):
+                    return best_score
+                alpha = max(alpha, best_score)
             return best_score
         else:
             best_score = math.inf
             for i in valid_actions:
-                x, y = TicTacToeState.find_pos(i)
-                if state.board[x][y] == 0:
-                    tic_state = TicTacToeState.transition(state, i)
-                    # print(f" try {i} at {x}{y} isMaximizing {isMaximizing}")
-                    score = AlphaBetaBot.AlphaBeta(
-                        tic_state, alpha, beta, True, player)
-                    state.board[x][y] == 0
-                    if (score < best_score):
-                        best_score = score
-                    if (best_score <= alpha):
-                        return best_score
-                    beta = min(beta, best_score)
+
+                tic_state = TicTacToeState.transition(state, i)
+                score = AlphaBetaBot.AlphaBeta(tic_state, alpha, beta, True, player)
+
+                if (score < best_score):
+                    best_score = score
+                if (best_score <= alpha):
+                    return best_score
+                beta = min(beta, best_score)
             return best_score
