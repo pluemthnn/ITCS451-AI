@@ -287,17 +287,17 @@ class HumanPlayer(StupidBot):
 
 class MinimaxBot(StupidBot):
 
+    count = 0
+
     def __init__(self, player: Player) -> None:
         super().__init__(player)
 
     # TODO 6: Implement Minimax Decision algorithm
     def play(self, state: TicTacToeState) -> Union[int, None]:
         """Return an action to play or None to skip."""
-
-        player = state.curPlayer # current player that us minimax
+        player = state.curPlayer
         valid_actions = TicTacToeState.actions(state)
-
-        if len(valid_actions) == 9: # 
+        if len(valid_actions) == 10:
             return valid_actions[np.random.randint(0, len(valid_actions))]
         else:
             best_score = -(math.inf)
@@ -312,25 +312,27 @@ class MinimaxBot(StupidBot):
                     if (score > best_score):
                         best_score = score
                         best_move = i
+                print(f"Minima {MinimaxBot.count}")
+            MinimaxBot.count = 0
             return best_move
 
     def minimax(state: TicTacToeState, isMaximizing, player: Player):
-
         valid_actions = TicTacToeState.actions(state)
-
-        # print(f"player: {player} in minimax")
         # print(f"Is Go--{TicTacToeState.isGoal(state)} {valid_actions}")
         if TicTacToeState.isGoal(state) == 1:
-            score = TicTacToeState.bot_util(state, player) 
+            score = TicTacToeState.bot_util(state, player)  # TODO Important !
             # print(f"in 1 score {score}")
+            MinimaxBot.count += 1
             return score
         elif TicTacToeState.isGoal(state) == 2:
-            score = TicTacToeState.bot_util(state, player) 
+            score = TicTacToeState.bot_util(state, player)  # TODO Important !
             # print(f"in -1 score {score}")
+            MinimaxBot.count += 1
             return score
         elif TicTacToeState.isGoal(state) == 3:
-            score = TicTacToeState.bot_util(state, player)
+            score = TicTacToeState.bot_util(state, player)  # TODO Important !
             # print(f"in tie score {score}")
+            MinimaxBot.count += 1
             return score
 
         if (isMaximizing):
@@ -345,7 +347,6 @@ class MinimaxBot(StupidBot):
                     if (score > best_score):
                         best_score = score
             return best_score
-
         else:
             best_score = math.inf
             for i in valid_actions:
@@ -362,10 +363,84 @@ class MinimaxBot(StupidBot):
 
 class AlphaBetaBot(StupidBot):
 
+    count = 0
+
     def __init__(self, player: Player) -> None:
         super().__init__(player)
 
     # TODO 7: Implement Alpha-Beta Decision algorithm
     def play(self, state: TicTacToeState) -> Union[int, None]:
         """Return an action to play or None to skip."""
-        return super().play(state)
+        player = state.curPlayer
+        valid_actions = TicTacToeState.actions(state)
+        if len(valid_actions) == 10:
+            return valid_actions[np.random.randint(0, len(valid_actions))]
+        else:
+            best_score = -(math.inf)
+            best_move = 0
+
+            for i in valid_actions:
+                x, y = TicTacToeState.find_pos(i)
+                if state.board[x][y] == 0:
+                    tic_state = TicTacToeState.transition(state, i)
+                    score = AlphaBetaBot.AlphaBeta(
+                        tic_state, -(math.inf), math.inf, False, player)
+                    state.board[x][y] == 0
+                    if (score > best_score):
+                        best_score = score
+                        best_move = i
+                print(f"Apl {AlphaBetaBot.count}")
+            AlphaBetaBot.count = 0
+            return best_move
+
+    def AlphaBeta(state: TicTacToeState, alpha, beta, isMaximizing, player: Player):
+        valid_actions = TicTacToeState.actions(state)
+        # print(f"Is Go--{TicTacToeState.isGoal(state)} {valid_actions}")
+        if TicTacToeState.isGoal(state) == 1:
+            score = TicTacToeState.bot_util(state, player)  # TODO Important !
+            AlphaBetaBot.count += 1
+            # print(f"in 1 score {score}")
+            return score
+        elif TicTacToeState.isGoal(state) == 2:
+            score = TicTacToeState.bot_util(state, player)  # TODO Important !
+            AlphaBetaBot.count += 1
+            # print(f"in -1 score {score}")
+            return score
+        elif TicTacToeState.isGoal(state) == 3:
+            score = TicTacToeState.bot_util(state, player)  # TODO Important !
+            AlphaBetaBot.count += 1
+            # print(f"in tie score {score}")
+            return score
+
+        if (isMaximizing):
+            best_score = -(math.inf)
+            for i in valid_actions:
+                x, y = TicTacToeState.find_pos(i)
+                if state.board[x][y] == 0:
+                    tic_state = TicTacToeState.transition(state, i)
+                    # print(f" try {i} at {x}{y} isMaximizing {isMaximizing}")
+                    score = AlphaBetaBot.AlphaBeta(
+                        tic_state, alpha, beta, False, player)
+                    state.board[x][y] == 0
+                    if (score > best_score):
+                        best_score = score
+                    if (best_score >= beta):
+                        return best_score
+                    alpha = max(alpha, best_score)
+            return best_score
+        else:
+            best_score = math.inf
+            for i in valid_actions:
+                x, y = TicTacToeState.find_pos(i)
+                if state.board[x][y] == 0:
+                    tic_state = TicTacToeState.transition(state, i)
+                    # print(f" try {i} at {x}{y} isMaximizing {isMaximizing}")
+                    score = AlphaBetaBot.AlphaBeta(
+                        tic_state, alpha, beta, True, player)
+                    state.board[x][y] == 0
+                    if (score < best_score):
+                        best_score = score
+                    if (best_score <= alpha):
+                        return best_score
+                    beta = min(beta, best_score)
+            return best_score
